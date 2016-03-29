@@ -20,7 +20,7 @@ namespace CodeStyleAnalyzer.CodeFixer
         private const string title = "Prefix field";
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(FieldNameAnalyzer.InstanceFieldDiagnosticId); }
+            get { return ImmutableArray.Create(FieldNameAnalyzer.DiagnosticId); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,7 +31,7 @@ namespace CodeStyleAnalyzer.CodeFixer
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
             var declaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf().OfType<VariableDeclaratorSyntax>().First();
-            var prefix = GetPrefixFromDiagnosticId(diagnostic.Id);
+            var prefix = GetPrefix(declaration.AncestorsAndSelf().OfType<FieldDeclarationSyntax>().First());
             context.RegisterCodeFix(
                 CodeAction.Create(
                     title: title,
@@ -39,15 +39,17 @@ namespace CodeStyleAnalyzer.CodeFixer
                     equivalenceKey: title),
                 diagnostic);
         }
-        private string GetPrefixFromDiagnosticId(string id)
+        private string GetPrefix(FieldDeclarationSyntax fieldDeclaration)
         {
-            switch(id)
+            if (fieldDeclaration.ChildTokens().Any(x => x.IsKind(SyntaxKind.StaticKeyword)))
             {
-                case "CSA0001": return "_";
-                case "CSA0002": return "s_";
-                case "CSA0003": return "t_";
+                if(fieldDeclaration.AttributeLists != null && fieldDeclaration.AttributeLists.Any(x => x.Attributes.Any(y => y.Name.GetFirstToken().ValueText == "ThreadStatic")))
+                {
+                    return "t_";
+                }
+                return "s_";
             }
-            return null;
+            return "_";
         }
 
         private async Task<Solution> PrefixFieldAsync(Document document, VariableDeclaratorSyntax variableDeclaration, string prefix, CancellationToken cancellationToken)

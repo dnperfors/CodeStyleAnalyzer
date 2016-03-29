@@ -33,7 +33,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
 
             var expectedDiagnostic = new DiagnosticResult
             {
-                Id = "CSA0001",
+                Id = "CSA0003",
                 Message = "Field 'testField' is not prefixed with '_'",
                 Severity = Microsoft.CodeAnalysis.DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 20) }
@@ -66,7 +66,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
 
             var expected = new DiagnosticResult
             {
-                Id = "CSA0002",
+                Id = "CSA0003",
                 Message = "Field 'testField' is not prefixed with 's_'",
                 Severity = Microsoft.CodeAnalysis.DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 27) }

@@ -8,9 +8,7 @@ namespace CodeStyleAnalyzer.Analyzers
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class FieldNameAnalyzer : DiagnosticAnalyzer
     {
-        public const string InstanceFieldDiagnosticId = "CSA0001";
-        public const string StaticFieldDiagnosticId = "CSA0002";
-        public const string ThreadStaticFieldDiagnosticId = "CSA0003";
+        public const string DiagnosticId = "CSA0003";
 
         private static readonly LocalizableString InstanceFieldTitle = new LocalizableResourceString(nameof(Resources.FieldNameInstanceFieldTitle), Resources.ResourceManager, typeof(Resources));
         private static readonly LocalizableString InstanceFieldMessageFormat = new LocalizableResourceString(nameof(Resources.FieldNameInstanceFieldMessageFormat), Resources.ResourceManager, typeof(Resources));
@@ -26,9 +24,9 @@ namespace CodeStyleAnalyzer.Analyzers
 
         private const string Category = "Naming";
 
-        private static DiagnosticDescriptor InstanceFieldRule = new DiagnosticDescriptor(InstanceFieldDiagnosticId, InstanceFieldTitle, InstanceFieldMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: InstanceFieldDescription);
-        private static DiagnosticDescriptor StaticFieldRule = new DiagnosticDescriptor(StaticFieldDiagnosticId, StaticFieldTitle, StaticFieldMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: StaticFieldDescription);
-        private static DiagnosticDescriptor ThreadStaticFieldRule = new DiagnosticDescriptor(ThreadStaticFieldDiagnosticId, ThreadStaticFieldTitle, ThreadStaticFieldMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: ThreadStaticFieldDescription);
+        private static DiagnosticDescriptor InstanceFieldRule = new DiagnosticDescriptor(DiagnosticId, InstanceFieldTitle, InstanceFieldMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: InstanceFieldDescription);
+        private static DiagnosticDescriptor StaticFieldRule = new DiagnosticDescriptor(DiagnosticId, StaticFieldTitle, StaticFieldMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: StaticFieldDescription);
+        private static DiagnosticDescriptor ThreadStaticFieldRule = new DiagnosticDescriptor(DiagnosticId, ThreadStaticFieldTitle, ThreadStaticFieldMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: ThreadStaticFieldDescription);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(InstanceFieldRule, StaticFieldRule, ThreadStaticFieldRule); } }
 
