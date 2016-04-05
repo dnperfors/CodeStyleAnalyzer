@@ -1,22 +1,25 @@
 ﻿using CodeStyleAnalyzer.Analyzers;
-using CodeStyleAnalyzer.CodeFixer;
+using CodeStyleAnalyzer.CodeFixers;
+using CodeStyleAnalyzer.Test.Verifiers;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using TestHelper;
 using Xunit;
 
 namespace CodeStyleAnalyzer.Test.Analyzers
 {
-    public class TestFieldNameAnalyzer : CodeFixVerifier
+    public class TestCSA0301 : CodeStyleAnalyzerVerifier
     {
+        protected override string CodeRuleId { get; } = "CSA0301";
+        protected override string CodeRuleMessage { get; } = "Field '{0}' is not prefixed with '{1}'";
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
-            return new FieldNameAnalyzer();
+            return new PrivateFieldPrefixAnalyzer();
         }
 
         protected override CodeFixProvider GetCSharpCodeFixProvider()
         {
-            return new FieldNameCodeFixProvider();
+            return new PrivateFieldPrefixCodeFixProvider();
         }
 
         [Fact]
@@ -31,13 +34,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
         }
     }";
 
-            var expectedDiagnostic = new DiagnosticResult
-            {
-                Id = "CSA0003",
-                Message = "Field 'testField' is not prefixed with '_'",
-                Severity = Microsoft.CodeAnalysis.DiagnosticSeverity.Warning,
-                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 20) }
-            };
+            var expectedDiagnostic = GetDiagnosticResult(6, 20, "testField", "_");
 
             var expectedSource = @"
     namespace Test
@@ -64,13 +61,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
         }
     }";
 
-            var expected = new DiagnosticResult
-            {
-                Id = "CSA0003",
-                Message = "Field 'testField' is not prefixed with 's_'",
-                Severity = Microsoft.CodeAnalysis.DiagnosticSeverity.Warning,
-                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 27) }
-            };
+            var expected = GetDiagnosticResult(6, 27, "testField", "s_");
 
             var expectedSource = @"
     namespace Test
@@ -97,13 +88,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
         }
     }";
 
-            var expected = new DiagnosticResult
-            {
-                Id = "CSA0003",
-                Message = "Field 'testField' is not prefixed with 't_'",
-                Severity = Microsoft.CodeAnalysis.DiagnosticSeverity.Warning,
-                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 27) }
-            };
+            var expected = GetDiagnosticResult(7, 27, "testField", "t_");
 
             var expectedSource = @"
     namespace Test

@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CodeStyleAnalyzer
-{
+namespace CodeStyleAnalyzer {
+    using System;
     using System.Reflection;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -166,6 +166,33 @@ namespace CodeStyleAnalyzer
         internal static string FieldNameThreadStaticFieldTitle {
             get {
                 return ResourceManager.GetString("FieldNameThreadStaticFieldTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility modifier should be specified..
+        /// </summary>
+        internal static string VisibilityModifierDescription {
+            get {
+                return ResourceManager.GetString("VisibilityModifierDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility modifier should be specified..
+        /// </summary>
+        internal static string VisibilityModifierMessageFormat {
+            get {
+                return ResourceManager.GetString("VisibilityModifierMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility modifier should be specified..
+        /// </summary>
+        internal static string VisibilityModifierTitle {
+            get {
+                return ResourceManager.GetString("VisibilityModifierTitle", resourceCulture);
             }
         }
     }

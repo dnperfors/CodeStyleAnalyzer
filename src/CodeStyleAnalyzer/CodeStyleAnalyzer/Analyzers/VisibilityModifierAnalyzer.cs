@@ -9,12 +9,13 @@ namespace CodeStyleAnalyzer.Analyzers
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class VisibilityModifierAnalyzer : DiagnosticAnalyzer
     {
-        public static string DiagnosticId = "CSA0005";
-
         private static SyntaxKind[] s_visibilityDeclarations = new[] { SyntaxKind.ClassDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.EnumDeclaration, SyntaxKind.MethodDeclaration, SyntaxKind.FieldDeclaration, SyntaxKind.PropertyDeclaration };
         private static SyntaxKind[] s_visibilityKeywords = new[] { SyntaxKind.InternalKeyword, SyntaxKind.PublicKeyword, SyntaxKind.ProtectedKeyword, SyntaxKind.PrivateKeyword };
 
-        private static DiagnosticDescriptor VisibilityModifierRule = new DiagnosticDescriptor(DiagnosticId, "Visibility modifier should be specified.", "Visibility modifier should be specified.", "Coding style", DiagnosticSeverity.Warning, true, "Visibility modifier should be specified.");
+        private static readonly LocalizableString VisibilityModifierTitle= new LocalizableResourceString(nameof(Resources.VisibilityModifierTitle), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString VisibilityModifierMessageFormat = new LocalizableResourceString(nameof(Resources.VisibilityModifierMessageFormat), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString VisibilityModifierDescription = new LocalizableResourceString(nameof(Resources.VisibilityModifierDescription), Resources.ResourceManager, typeof(Resources));
+        private static DiagnosticDescriptor VisibilityModifierRule = new DiagnosticDescriptor(DiagnosticIds.SpecifyVisibility, VisibilityModifierTitle, VisibilityModifierMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, true, VisibilityModifierDescription);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(VisibilityModifierRule); } }
 

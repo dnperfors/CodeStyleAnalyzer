@@ -156,4 +156,13 @@
   <data name="FieldNameThreadStaticFieldTitle" xml:space="preserve">
     <value>Field is not prefixed with 't_'</value>
   </data>
+  <data name="VisibilityModifierDescription" xml:space="preserve">
+    <value>Visibility modifier should be specified.</value>
+  </data>
+  <data name="VisibilityModifierMessageFormat" xml:space="preserve">
+    <value>Visibility modifier should be specified.</value>
+  </data>
+  <data name="VisibilityModifierTitle" xml:space="preserve">
+    <value>Visibility modifier should be specified.</value>
+  </data>
 </root>
