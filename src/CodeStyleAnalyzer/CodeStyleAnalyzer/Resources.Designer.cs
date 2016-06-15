@@ -188,6 +188,33 @@ namespace CodeStyleAnalyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visibility modifier should be the first modifier..
+        /// </summary>
+        internal static string VisibilityModifierPositionDescription {
+            get {
+                return ResourceManager.GetString("VisibilityModifierPositionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility modifier should be the first modifier..
+        /// </summary>
+        internal static string VisibilityModifierPositionMessageFormat {
+            get {
+                return ResourceManager.GetString("VisibilityModifierPositionMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility modifier should be the first modifier..
+        /// </summary>
+        internal static string VisibilityModifierPositionTitle {
+            get {
+                return ResourceManager.GetString("VisibilityModifierPositionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visibility modifier should be specified..
         /// </summary>
         internal static string VisibilityModifierTitle {

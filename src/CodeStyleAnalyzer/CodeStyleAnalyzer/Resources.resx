@@ -162,6 +162,15 @@
   <data name="VisibilityModifierMessageFormat" xml:space="preserve">
     <value>Visibility modifier should be specified.</value>
   </data>
+  <data name="VisibilityModifierPositionDescription" xml:space="preserve">
+    <value>Visibility modifier should be the first modifier.</value>
+  </data>
+  <data name="VisibilityModifierPositionMessageFormat" xml:space="preserve">
+    <value>Visibility modifier should be the first modifier.</value>
+  </data>
+  <data name="VisibilityModifierPositionTitle" xml:space="preserve">
+    <value>Visibility modifier should be the first modifier.</value>
+  </data>
   <data name="VisibilityModifierTitle" xml:space="preserve">
     <value>Visibility modifier should be specified.</value>
   </data>

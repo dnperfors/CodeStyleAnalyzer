@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyzers\TestCSA0502.cs" />
     <Compile Include="Analyzers\TestCSA0301.cs" />
     <Compile Include="Analyzers\TestCSA0501.cs" />
     <Compile Include="Verifiers\CodeFixVerifier.cs" />
