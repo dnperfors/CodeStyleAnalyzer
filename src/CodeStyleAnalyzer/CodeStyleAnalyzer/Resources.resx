@@ -156,6 +156,15 @@
   <data name="FieldNameThreadStaticFieldTitle" xml:space="preserve">
     <value>Field is not prefixed with 't_'</value>
   </data>
+  <data name="NamespacePositionDescripition" xml:space="preserve">
+    <value>Namespace imports should be specified at the top of the file, outside of namespace declarations</value>
+  </data>
+  <data name="NamespacePositionMessageFormat" xml:space="preserve">
+    <value>Namespace imports should be specified at the top of the file, outside of namespace declarations</value>
+  </data>
+  <data name="NamespacePositionTitle" xml:space="preserve">
+    <value>Namespace imports should be specified at the top of the file, outside of namespace declarations</value>
+  </data>
   <data name="VisibilityModifierDescription" xml:space="preserve">
     <value>Visibility modifier should be specified.</value>
   </data>

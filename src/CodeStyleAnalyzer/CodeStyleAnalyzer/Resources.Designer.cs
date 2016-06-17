@@ -170,6 +170,33 @@ namespace CodeStyleAnalyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Namespace imports should be specified at the top of the file, outside of namespace declarations.
+        /// </summary>
+        internal static string NamespacePositionDescripition {
+            get {
+                return ResourceManager.GetString("NamespacePositionDescripition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namespace imports should be specified at the top of the file, outside of namespace declarations.
+        /// </summary>
+        internal static string NamespacePositionMessageFormat {
+            get {
+                return ResourceManager.GetString("NamespacePositionMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namespace imports should be specified at the top of the file, outside of namespace declarations.
+        /// </summary>
+        internal static string NamespacePositionTitle {
+            get {
+                return ResourceManager.GetString("NamespacePositionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visibility modifier should be specified..
         /// </summary>
         internal static string VisibilityModifierDescription {

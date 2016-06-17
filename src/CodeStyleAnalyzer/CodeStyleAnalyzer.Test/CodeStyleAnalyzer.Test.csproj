@@ -121,6 +121,7 @@
     <Compile Include="Analyzers\TestCSA0502.cs" />
     <Compile Include="Analyzers\TestCSA0301.cs" />
     <Compile Include="Analyzers\TestCSA0501.cs" />
+    <Compile Include="Analyzers\TestCSA0601.cs" />
     <Compile Include="Verifiers\CodeFixVerifier.cs" />
     <Compile Include="Verifiers\CodeStyleAnalyzerVerifier.cs" />
     <Compile Include="Verifiers\DiagnosticVerifier.cs" />

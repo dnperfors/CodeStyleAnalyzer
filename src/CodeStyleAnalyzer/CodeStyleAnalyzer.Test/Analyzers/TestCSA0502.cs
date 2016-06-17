@@ -1,9 +1,4 @@
 ﻿using CodeStyleAnalyzer.Test.Verifiers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using Microsoft.CodeAnalysis.Diagnostics;
 using CodeStyleAnalyzer.Analyzers;
@@ -15,10 +10,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
         protected override string CodeRuleId { get; } = "CSA0502";
         protected override string CodeRuleMessage { get; } = "Visibility modifier should be the first modifier.";
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new VisibilityModifierAnalyzer();
-        }
+        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer() => new VisibilityModifierAnalyzer();
 
         [Fact]
         public void VisibilityOperatorInTheWrongPlace_ShouldReturnCorrectMessage()
