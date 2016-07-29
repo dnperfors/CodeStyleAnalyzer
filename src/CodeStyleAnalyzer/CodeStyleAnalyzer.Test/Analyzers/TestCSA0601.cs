@@ -20,13 +20,14 @@ namespace CodeStyleAnalyzer.Test.Analyzers
 using System;
 namespace Test
 {
+    using TestFunc = Func<int>;
     internal class Test { }
 }";
             VerifyCSharpDiagnostic(source);
         }
 
         [Fact]
-        public void IncorrectFile_ShouldNotGiveError()
+        public void IncorrectFile_ShouldGiveError()
         {
             var source = @"
 namespace Test

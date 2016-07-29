@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CodeStyleAnalyzer.Analyzers
 {
@@ -23,7 +24,7 @@ namespace CodeStyleAnalyzer.Analyzers
 
         private void ValidateNamespacePosition(SyntaxNodeAnalysisContext context)
         {
-            if(context.Node.Ancestors().Any(x => x.IsKind(SyntaxKind.NamespaceDeclaration)))
+            if(((UsingDirectiveSyntax)context.Node).Alias == null && context.Node.Ancestors().Any(x => x.IsKind(SyntaxKind.NamespaceDeclaration)))
             {
                 context.ReportDiagnostic(Diagnostic.Create(NamespacePositionRule, context.Node.GetLocation()));
             }
