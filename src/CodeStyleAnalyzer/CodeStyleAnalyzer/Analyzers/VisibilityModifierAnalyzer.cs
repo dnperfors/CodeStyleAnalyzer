@@ -3,13 +3,31 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
+using System;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CodeStyleAnalyzer.Analyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class VisibilityModifierAnalyzer : DiagnosticAnalyzer
     {
-        private static SyntaxKind[] s_visibilityDeclarations = { SyntaxKind.ClassDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.EnumDeclaration, SyntaxKind.MethodDeclaration, SyntaxKind.FieldDeclaration, SyntaxKind.PropertyDeclaration };
+        private static SyntaxKind[] s_typeDeclarations =
+        {
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.InterfaceDeclaration,
+            SyntaxKind.StructDeclaration,
+            SyntaxKind.EnumDeclaration,
+            SyntaxKind.DelegateDeclaration,
+        };
+        private static SyntaxKind[] s_memberDeclarations =
+        {
+            SyntaxKind.ConstructorDeclaration,
+            SyntaxKind.MethodDeclaration,
+            SyntaxKind.PropertyDeclaration,
+            SyntaxKind.IndexerDeclaration,
+            SyntaxKind.EventFieldDeclaration,
+            SyntaxKind.FieldDeclaration,
+        };
         private static SyntaxKind[] s_visibilityKeywords = { SyntaxKind.InternalKeyword, SyntaxKind.PublicKeyword, SyntaxKind.ProtectedKeyword, SyntaxKind.PrivateKeyword };
 
         private static readonly LocalizableString VisibilityModifierTitle = new LocalizableResourceString(nameof(Resources.VisibilityModifierTitle), Resources.ResourceManager, typeof(Resources));
@@ -31,10 +49,11 @@ namespace CodeStyleAnalyzer.Analyzers
 
         private static void CheckVisibility(CompilationStartAnalysisContext context)
         {
-            context.RegisterSyntaxNodeAction(CheckVisibility, ImmutableArray.Create(s_visibilityDeclarations));
+            context.RegisterSyntaxNodeAction(checkVisibility, ImmutableArray.Create(s_typeDeclarations));
+            context.RegisterSyntaxNodeAction(checkMemberVisibility, ImmutableArray.Create(s_memberDeclarations));
         }
 
-        private static void CheckVisibility(SyntaxNodeAnalysisContext context)
+        private static void checkVisibility(SyntaxNodeAnalysisContext context)
         {
             var foundVisibilityToken = context.Node.ChildTokens().FirstOrDefault(HasVisibilityKeyword);
 
@@ -44,11 +63,25 @@ namespace CodeStyleAnalyzer.Analyzers
             }
             else
             {
-                if (context.Node.GetFirstToken() != foundVisibilityToken)
+                if (context.Node.GetFirstToken() != foundVisibilityToken && foundVisibilityToken.GetPreviousToken().Kind() != SyntaxKind.CloseBracketToken)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(VisibilityModifierPositionRule, foundVisibilityToken.GetLocation()));
                 }
             }
+        }
+
+        private static void checkMemberVisibility(SyntaxNodeAnalysisContext context)
+        {
+            if (!ShouldHaveExplicitVisibility(context.Node)) return;
+            checkVisibility(context);
+        }
+
+        private static bool ShouldHaveExplicitVisibility(SyntaxNode node)
+        {
+            if (node.Parent.IsKind(SyntaxKind.InterfaceDeclaration)) return false;
+            if (node.ChildNodes().OfType<ExplicitInterfaceSpecifierSyntax>().Any()) return false;
+            if (node.IsKind(SyntaxKind.ConstructorDeclaration) && node.ChildNodesAndTokens().Any(x => x.IsKind(SyntaxKind.StaticKeyword))) return false;
+            return true;
         }
 
         private static bool HasVisibilityKeyword(SyntaxToken token)

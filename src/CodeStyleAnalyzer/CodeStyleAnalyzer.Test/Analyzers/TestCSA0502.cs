@@ -2,6 +2,8 @@
 using Xunit;
 using Microsoft.CodeAnalysis.Diagnostics;
 using CodeStyleAnalyzer.Analyzers;
+using System;
+using System.Collections;
 
 namespace CodeStyleAnalyzer.Test.Analyzers
 {
@@ -31,6 +33,19 @@ namespace Test
             var source = @"
 namespace Test
 {
+    internal abstract class Test { }
+}
+";
+            VerifyCSharpDiagnostic(source);
+        }
+
+        [Fact]
+        public void VisibilityOperatorWithAttribute_ShouldReturnCorrectMessage()
+        {
+            var source = @"
+namespace Test
+{
+    [Serializable]
     internal abstract class Test { }
 }
 ";
