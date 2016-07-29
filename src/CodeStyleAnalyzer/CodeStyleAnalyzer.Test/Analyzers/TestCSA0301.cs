@@ -10,7 +10,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
     public class TestCSA0301 : CodeStyleAnalyzerVerifier
     {
         protected override string CodeRuleId { get; } = "CSA0301";
-        protected override string CodeRuleMessage { get; } = "Field '{0}' is not prefixed with '{1}'";
+        protected override string CodeRuleMessage { get; } = "Field '{0}' is not prefixed correctly.";
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
@@ -26,82 +26,56 @@ namespace CodeStyleAnalyzer.Test.Analyzers
         public void PrivateField_WithoutPrefix_ShouldReturnCorrectMessage()
         {
             var source = @"
-    namespace Test
-    {
-        class TestClass
-        {
-            string testField;
-        }
-    }";
+using System;
+class TestClass
+{
+    string privateField, x_, _, __, m_field;
+    static string privateStaticField;
+    [ThreadStatic] static string privateThreadStaticField;
+}";
 
-            var expectedDiagnostic = GetDiagnosticResult(6, 20, "testField", "_");
+            var expectedDiagnostic = new[]
+            {
+                GetDiagnosticResult(5, 12, "privateField"),
+                GetDiagnosticResult(5, 26, "x_"),
+                GetDiagnosticResult(5, 37, "m_field"),
+                GetDiagnosticResult(6, 19, "privateStaticField"),
+                GetDiagnosticResult(7, 34, "privateThreadStaticField"),
+            };
 
             var expectedSource = @"
-    namespace Test
-    {
-        class TestClass
-        {
-            string _testField;
-        }
-    }";
+using System;
+class TestClass
+{
+    string _privateField, _x, _, __, _field;
+    static string s_privateStaticField;
+    [ThreadStatic] static string t_privateThreadStaticField;
+}";
 
             VerifyCSharpDiagnostic(source, expectedDiagnostic);
             VerifyCSharpFix(source, expectedSource);
         }
 
         [Fact]
-        public void PrivateStaticField_WithoutPrefix_ShouldReturnCorrectMessage()
+        public void PublicFields_WithoutPrefix_ShouldNotReturnDiagnostic()
         {
             var source = @"
-    namespace Test
-    {
-        class TestClass
-        {
-            static string testField;
-        }
-    }";
+using System;
+class TestClass
+{
+    public string TestField;
+    public readonly string ReadonlyTestField;
+    public static string StaticTestField;
+    [ThreadStatic]
+    public static string ThreadStaticTestField;
 
-            var expected = GetDiagnosticResult(6, 27, "testField", "s_");
+    [ThreadStatic]
+    [NonSerializable]
+    private static string t_testField;
 
-            var expectedSource = @"
-    namespace Test
-    {
-        class TestClass
-        {
-            static string s_testField;
-        }
-    }";
-            VerifyCSharpDiagnostic(source, expected);
-            VerifyCSharpFix(source, expectedSource);
-        }
-
-        [Fact]
-        public void PrivateThreadStaticField_WithoutPrefix_ShouldReturnCorrectMessage()
-        {
-            var source = @"
-    namespace Test
-    {
-        class TestClass
-        {
-            [ThreadStatic]
-            static string testField;
-        }
-    }";
-
-            var expected = GetDiagnosticResult(7, 27, "testField", "t_");
-
-            var expectedSource = @"
-    namespace Test
-    {
-        class TestClass
-        {
-            [ThreadStatic]
-            static string t_testField;
-        }
-    }";
-
-            VerifyCSharpDiagnostic(source, expected);
-            VerifyCSharpFix(source, expectedSource);
+    private const string ConstField = ""Test"";
+}";
+            VerifyCSharpDiagnostic(source);
         }
     }
 }

@@ -1,30 +1,21 @@
-﻿using System.Collections.Immutable;
-using System.Linq;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace CodeStyleAnalyzer.Analyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class PrivateFieldPrefixAnalyzer : DiagnosticAnalyzer
     {
-        private static readonly LocalizableString InstanceFieldTitle = new LocalizableResourceString(nameof(Resources.FieldNameInstanceFieldTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString InstanceFieldMessageFormat = new LocalizableResourceString(nameof(Resources.FieldNameInstanceFieldMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString InstanceFieldDescription = new LocalizableResourceString(nameof(Resources.FieldNameInstanceFieldDescripition), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString PrivateFieldPrefixTitle = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixTitle), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString PrivateFieldPrefixMessage = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixMessageFormat), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString PrivateFieldPrefixDescription = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixDescription), Resources.ResourceManager, typeof(Resources));
 
-        private static readonly LocalizableString StaticFieldTitle = new LocalizableResourceString(nameof(Resources.FieldNameStaticFieldTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString StaticFieldMessageFormat = new LocalizableResourceString(nameof(Resources.FieldNameStaticFieldMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString StaticFieldDescription = new LocalizableResourceString(nameof(Resources.FieldNameStaticFieldDescripition), Resources.ResourceManager, typeof(Resources));
+        private static DiagnosticDescriptor PrivateFIeldPrefixRule = new DiagnosticDescriptor(DiagnosticIds.PrivateFieldPrefix, PrivateFieldPrefixTitle, PrivateFieldPrefixMessage, Categories.StyleGuide, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: PrivateFieldPrefixDescription);
 
-        private static readonly LocalizableString ThreadStaticFieldTitle = new LocalizableResourceString(nameof(Resources.FieldNameThreadStaticFieldTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString ThreadStaticFieldMessageFormat = new LocalizableResourceString(nameof(Resources.FieldNameThreadStaticFieldMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString ThreadStaticFieldDescription = new LocalizableResourceString(nameof(Resources.FieldNameThreadStaticFieldDescripition), Resources.ResourceManager, typeof(Resources));
-
-        private static DiagnosticDescriptor InstanceFieldRule = new DiagnosticDescriptor(DiagnosticIds.PrivateFieldPrefix, InstanceFieldTitle, InstanceFieldMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: InstanceFieldDescription);
-        private static DiagnosticDescriptor StaticFieldRule = new DiagnosticDescriptor(DiagnosticIds.PrivateFieldPrefix, StaticFieldTitle, StaticFieldMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: StaticFieldDescription);
-        private static DiagnosticDescriptor ThreadStaticFieldRule = new DiagnosticDescriptor(DiagnosticIds.PrivateFieldPrefix, ThreadStaticFieldTitle, ThreadStaticFieldMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: ThreadStaticFieldDescription);
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(InstanceFieldRule, StaticFieldRule, ThreadStaticFieldRule); } }
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(PrivateFIeldPrefixRule); } }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -33,29 +24,53 @@ namespace CodeStyleAnalyzer.Analyzers
 
         private static void AnalyzeSymbol(SymbolAnalysisContext context)
         {
-            var fieldSymbol = (IFieldSymbol)context.Symbol;
+            var fieldSymbol = context.Symbol;
+            if(!IsPrivateField((IFieldSymbol)fieldSymbol)) return;
+            var newFieldName = GetNewFieldName(fieldSymbol);
+            if (newFieldName != fieldSymbol.Name)
+            {
+                var diagnostic = Diagnostic.Create(PrivateFIeldPrefixRule, fieldSymbol.Locations[0], fieldSymbol.Name);
+                context.ReportDiagnostic(diagnostic);
+            }
+        }
+
+        private static bool IsPrivateField(IFieldSymbol fieldSymbol)
+        {
+            return fieldSymbol.DeclaredAccessibility == Accessibility.Private && !fieldSymbol.HasConstantValue;
+        }
+
+        private static string GetNewFieldName(ISymbol fieldSymbol)
+        {
+            var name = fieldSymbol.Name.Trim('_');
+            if (name.Length > 2 && char.IsLetter(name[0]) && name[1] == '_')
+            {
+                name = name.Substring(2);
+            }
+
+            if (name.Length == 0)
+            {
+                return fieldSymbol.Name;
+            }
+
+            if (name.Length > 2 && char.IsUpper(name[0]) && char.IsLower(name[1]))
+            {
+                name = char.ToLower(name[0]) + name.Substring(1);
+            }
 
             if (fieldSymbol.IsStatic)
             {
-                if (fieldSymbol.GetAttributes().Any(x => x.AttributeClass.Name == "ThreadStatic"))
+                // Check for ThreadStatic private fields.
+                if (fieldSymbol.GetAttributes().Any(a => a.AttributeClass.Name.Equals("ThreadStaticAttribute", StringComparison.Ordinal)))
                 {
-                    if (!fieldSymbol.Name.StartsWith("t_"))
-                    {
-                        var diagnostic = Diagnostic.Create(ThreadStaticFieldRule, fieldSymbol.Locations[0], fieldSymbol.Name);
-                        context.ReportDiagnostic(diagnostic);
-                    }
+                    return "t_" + name;
                 }
-                else if (!fieldSymbol.Name.StartsWith("s_"))
+                else
                 {
-                    var diagnostic = Diagnostic.Create(StaticFieldRule, fieldSymbol.Locations[0], fieldSymbol.Name);
-                    context.ReportDiagnostic(diagnostic);
+                    return "s_" + name;
                 }
             }
-            else if (!fieldSymbol.Name.StartsWith("_"))
-            {
-                var diagnostic = Diagnostic.Create(InstanceFieldRule, fieldSymbol.Locations[0], fieldSymbol.Name);
-                context.ReportDiagnostic(diagnostic);
-            }
+
+            return "_" + name;
         }
     }
 }

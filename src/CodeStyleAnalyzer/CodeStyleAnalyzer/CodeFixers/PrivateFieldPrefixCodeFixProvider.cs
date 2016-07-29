@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
 using System.Threading;
@@ -7,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Rename;
 
 namespace CodeStyleAnalyzer.CodeFixers
@@ -23,44 +23,72 @@ namespace CodeStyleAnalyzer.CodeFixers
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            var semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            var root = await semanticModel.SyntaxTree.GetRootAsync(context.CancellationToken);
 
             var diagnostic = context.Diagnostics.First();
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
-            var declaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf().OfType<VariableDeclaratorSyntax>().First();
-            var prefix = GetPrefix(declaration.AncestorsAndSelf().OfType<FieldDeclarationSyntax>().First());
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    title: title,
-                    createChangedSolution: c => PrefixFieldAsync(context.Document, declaration, prefix, c),
-                    equivalenceKey: title),
-                diagnostic);
-        }
-        private string GetPrefix(FieldDeclarationSyntax fieldDeclaration)
-        {
-            if (fieldDeclaration.ChildTokens().Any(x => x.IsKind(SyntaxKind.StaticKeyword)))
+
+            var declaration = root.FindToken(diagnosticSpan.Start).Parent;
+            var fieldSymbol = semanticModel.GetDeclaredSymbol(declaration);
+            var newName = GetNewFieldName(fieldSymbol);
+            if (fieldSymbol.Name != newName)
             {
-                if(fieldDeclaration.AttributeLists != null && fieldDeclaration.AttributeLists.Any(x => x.Attributes.Any(y => y.Name.GetFirstToken().ValueText == "ThreadStatic")))
-                {
-                    return "t_";
-                }
-                return "s_";
+                context.RegisterCodeFix(
+                    CodeAction.Create(
+                        title: title,
+                        createChangedSolution: c => RenameFieldAsync(context.Document, fieldSymbol, newName, c),
+                        equivalenceKey: title),
+                    diagnostic);
             }
-            return "_";
         }
 
-        private async Task<Solution> PrefixFieldAsync(Document document, VariableDeclaratorSyntax variableDeclaration, string prefix, CancellationToken cancellationToken)
+        private string GetNewFieldName(ISymbol fieldSymbol)
         {
-            var identifierToken = variableDeclaration.Identifier;
-            var newName = prefix + identifierToken.Text;
+            var name = fieldSymbol.Name.Trim('_');
+            if (name.Length > 2 && char.IsLetter(name[0]) && name[1] == '_')
+            {
+                name = name.Substring(2);
+            }
 
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
-            var typeSymbol = semanticModel.GetDeclaredSymbol(variableDeclaration, cancellationToken);
+            // Some .NET code uses "ts_" prefix for thread static
+            if (name.Length > 3 && name.StartsWith("ts_", StringComparison.OrdinalIgnoreCase))
+            {
+                name = name.Substring(3);
+            }
 
+            if (name.Length == 0)
+            {
+                return fieldSymbol.Name;
+            }
+
+            if (name.Length > 2 && char.IsUpper(name[0]) && char.IsLower(name[1]))
+            {
+                name = char.ToLower(name[0]) + name.Substring(1);
+            }
+
+            if (fieldSymbol.IsStatic)
+            {
+                // Check for ThreadStatic private fields.
+                if (fieldSymbol.GetAttributes().Any(a => a.AttributeClass.Name.Equals("ThreadStaticAttribute", StringComparison.Ordinal)))
+                {
+                    return "t_" + name;
+                }
+                else
+                {
+                    return "s_" + name;
+                }
+            }
+
+            return "_" + name;
+        }
+
+        private async Task<Solution> RenameFieldAsync(Document document, ISymbol fieldSymbol, string newName, CancellationToken cancellationToken)
+        {
             var originalSolution = document.Project.Solution;
             var optionSet = originalSolution.Workspace.Options;
-            var newSolution = await Renamer.RenameSymbolAsync(document.Project.Solution, typeSymbol, newName, optionSet, cancellationToken).ConfigureAwait(false);
+            var newSolution = await Renamer.RenameSymbolAsync(document.Project.Solution, fieldSymbol, newName, optionSet, cancellationToken).ConfigureAwait(false);
 
             return newSolution;
         }

@@ -62,114 +62,6 @@ namespace CodeStyleAnalyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type names should be all uppercase..
-        /// </summary>
-        internal static string AnalyzerDescription {
-            get {
-                return ResourceManager.GetString("AnalyzerDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type name &apos;{0}&apos; contains lowercase letters.
-        /// </summary>
-        internal static string AnalyzerMessageFormat {
-            get {
-                return ResourceManager.GetString("AnalyzerMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type name contains lowercase letters.
-        /// </summary>
-        internal static string AnalyzerTitle {
-            get {
-                return ResourceManager.GetString("AnalyzerTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fields should be prefixed with &apos;_&apos;..
-        /// </summary>
-        internal static string FieldNameInstanceFieldDescripition {
-            get {
-                return ResourceManager.GetString("FieldNameInstanceFieldDescripition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Field &apos;{0}&apos; is not prefixed with &apos;_&apos;.
-        /// </summary>
-        internal static string FieldNameInstanceFieldMessageFormat {
-            get {
-                return ResourceManager.GetString("FieldNameInstanceFieldMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Field is not prefixed with &apos;_&apos;.
-        /// </summary>
-        internal static string FieldNameInstanceFieldTitle {
-            get {
-                return ResourceManager.GetString("FieldNameInstanceFieldTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fields should be prefixed with &apos;s_&apos;..
-        /// </summary>
-        internal static string FieldNameStaticFieldDescripition {
-            get {
-                return ResourceManager.GetString("FieldNameStaticFieldDescripition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Field &apos;{0}&apos; is not prefixed with &apos;s_&apos;.
-        /// </summary>
-        internal static string FieldNameStaticFieldMessageFormat {
-            get {
-                return ResourceManager.GetString("FieldNameStaticFieldMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Field is not prefixed with &apos;s_&apos;.
-        /// </summary>
-        internal static string FieldNameStaticFieldTitle {
-            get {
-                return ResourceManager.GetString("FieldNameStaticFieldTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fields should be prefixed with &apos;t_&apos;..
-        /// </summary>
-        internal static string FieldNameThreadStaticFieldDescripition {
-            get {
-                return ResourceManager.GetString("FieldNameThreadStaticFieldDescripition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Field &apos;{0}&apos; is not prefixed with &apos;t_&apos;.
-        /// </summary>
-        internal static string FieldNameThreadStaticFieldMessageFormat {
-            get {
-                return ResourceManager.GetString("FieldNameThreadStaticFieldMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Field is not prefixed with &apos;t_&apos;.
-        /// </summary>
-        internal static string FieldNameThreadStaticFieldTitle {
-            get {
-                return ResourceManager.GetString("FieldNameThreadStaticFieldTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Namespace imports should be specified at the top of the file, outside of namespace declarations.
         /// </summary>
         internal static string NamespacePositionDescripition {
@@ -193,6 +85,33 @@ namespace CodeStyleAnalyzer {
         internal static string NamespacePositionTitle {
             get {
                 return ResourceManager.GetString("NamespacePositionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fields should be prefixed with &apos;_&apos;, &apos;s_&apos; or &apos;t_&apos;..
+        /// </summary>
+        internal static string PrivateFieldPrefixDescription {
+            get {
+                return ResourceManager.GetString("PrivateFieldPrefixDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field &apos;{0}&apos; is not prefixed correctly..
+        /// </summary>
+        internal static string PrivateFieldPrefixMessageFormat {
+            get {
+                return ResourceManager.GetString("PrivateFieldPrefixMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field is not prefixed correctly..
+        /// </summary>
+        internal static string PrivateFieldPrefixTitle {
+            get {
+                return ResourceManager.GetString("PrivateFieldPrefixTitle", resourceCulture);
             }
         }
         

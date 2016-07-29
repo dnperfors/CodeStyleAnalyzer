@@ -117,45 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzerDescription" xml:space="preserve">
-    <value>Type names should be all uppercase.</value>
-    <comment>An optional longer localizable description of the diagnostic.</comment>
-  </data>
-  <data name="AnalyzerMessageFormat" xml:space="preserve">
-    <value>Type name '{0}' contains lowercase letters</value>
-    <comment>The format-able message the diagnostic displays.</comment>
-  </data>
-  <data name="AnalyzerTitle" xml:space="preserve">
-    <value>Type name contains lowercase letters</value>
-    <comment>The title of the diagnostic.</comment>
-  </data>
-  <data name="FieldNameInstanceFieldDescripition" xml:space="preserve">
-    <value>Fields should be prefixed with '_'.</value>
-  </data>
-  <data name="FieldNameInstanceFieldMessageFormat" xml:space="preserve">
-    <value>Field '{0}' is not prefixed with '_'</value>
-  </data>
-  <data name="FieldNameInstanceFieldTitle" xml:space="preserve">
-    <value>Field is not prefixed with '_'</value>
-  </data>
-  <data name="FieldNameStaticFieldDescripition" xml:space="preserve">
-    <value>Fields should be prefixed with 's_'.</value>
-  </data>
-  <data name="FieldNameStaticFieldMessageFormat" xml:space="preserve">
-    <value>Field '{0}' is not prefixed with 's_'</value>
-  </data>
-  <data name="FieldNameStaticFieldTitle" xml:space="preserve">
-    <value>Field is not prefixed with 's_'</value>
-  </data>
-  <data name="FieldNameThreadStaticFieldDescripition" xml:space="preserve">
-    <value>Fields should be prefixed with 't_'.</value>
-  </data>
-  <data name="FieldNameThreadStaticFieldMessageFormat" xml:space="preserve">
-    <value>Field '{0}' is not prefixed with 't_'</value>
-  </data>
-  <data name="FieldNameThreadStaticFieldTitle" xml:space="preserve">
-    <value>Field is not prefixed with 't_'</value>
-  </data>
   <data name="NamespacePositionDescripition" xml:space="preserve">
     <value>Namespace imports should be specified at the top of the file, outside of namespace declarations</value>
   </data>
@@ -164,6 +125,15 @@
   </data>
   <data name="NamespacePositionTitle" xml:space="preserve">
     <value>Namespace imports should be specified at the top of the file, outside of namespace declarations</value>
+  </data>
+  <data name="PrivateFieldPrefixDescription" xml:space="preserve">
+    <value>Fields should be prefixed with '_', 's_' or 't_'.</value>
+  </data>
+  <data name="PrivateFieldPrefixMessageFormat" xml:space="preserve">
+    <value>Field '{0}' is not prefixed correctly.</value>
+  </data>
+  <data name="PrivateFieldPrefixTitle" xml:space="preserve">
+    <value>Field is not prefixed correctly.</value>
   </data>
   <data name="VisibilityModifierDescription" xml:space="preserve">
     <value>Visibility modifier should be specified.</value>
