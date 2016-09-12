@@ -19,6 +19,7 @@ namespace CodeStyleAnalyzer.Analyzers
 
         public override void Initialize(AnalysisContext context)
         {
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.Field);
         }
 

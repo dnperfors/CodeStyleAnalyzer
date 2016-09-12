@@ -15,10 +15,12 @@ namespace CodeStyleAnalyzer.Analyzers
         private static readonly LocalizableString NamespacePositionDescription = new LocalizableResourceString(nameof(Resources.NamespacePositionDescripition), Resources.ResourceManager, typeof(Resources));
 
         private static DiagnosticDescriptor NamespacePositionRule = new DiagnosticDescriptor(DiagnosticIds.UsingShouldBeOutsideNamespace, NamespacePositionTitle, NamespacePositionMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, true, NamespacePositionDescription);
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(NamespacePositionRule); } }
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(NamespacePositionRule);
 
         public override void Initialize(AnalysisContext context)
         {
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.RegisterSyntaxNodeAction(ValidateNamespacePosition, SyntaxKind.UsingDirective);
         }
 
