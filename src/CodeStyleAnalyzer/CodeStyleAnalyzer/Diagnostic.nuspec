@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
       <id>CodeStyleAnalyzer</id>
-      <version>0.1.0</version>
+      <version>0.1.2</version>
       <title>CodeStyleAnalyzer</title>
       <authors>David Perfors</authors>
       <owners>David Perfors</owners>
@@ -10,11 +10,7 @@
       <projectUrl>https://github.com/dnperfors/CodeStyleAnalyzis</projectUrl>
       <requireLicenseAcceptance>false</requireLicenseAcceptance>
       <description>Analyzer to check code style against the .NET core coding style guide.</description>
-      <releaseNotes>
-          - Analyzer for private field naming
-          - Codefix for private field naming
-          - Analyzer for visibility modifiers
-          - Analyzer for namespace positioning
+      <releaseNotes>https://github.com/dnperfors/CodeStyleAnalyzer/releases
       </releaseNotes>
       <copyright>Copyright David Perfors ©  2016</copyright>
       <tags>CodeStyleAnalyzer, analyzers, code style</tags>
