@@ -36,6 +36,7 @@
     <Compile Include="Analyzers\PrivateFieldPrefixAnalyzer.cs" />
     <Compile Include="Analyzers\VisibilityModifierAnalyzer.cs" />
     <Compile Include="Categories.cs" />
+    <Compile Include="CodeFixers\NamespaceCodeFixProvider.cs" />
     <Compile Include="CodeFixers\PrivateFieldPrefixCodeFixProvider.cs" />
     <Compile Include="DiagnosticIds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

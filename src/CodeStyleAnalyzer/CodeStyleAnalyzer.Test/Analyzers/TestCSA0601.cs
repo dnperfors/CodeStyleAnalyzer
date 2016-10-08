@@ -2,6 +2,8 @@
 using Xunit;
 using Microsoft.CodeAnalysis.Diagnostics;
 using CodeStyleAnalyzer.Analyzers;
+using Microsoft.CodeAnalysis.CodeFixes;
+using CodeStyleAnalyzer.CodeFixers;
 
 namespace CodeStyleAnalyzer.Test.Analyzers
 {
@@ -12,6 +14,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
         protected override string CodeRuleMessage { get; } = "Namespace imports should be specified at the top of the file, outside of namespace declarations";
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer() => new NamespaceAnalyzer();
+        protected override CodeFixProvider GetCSharpCodeFixProvider() => new NamespaceCodeFixProvider();
 
         [Fact]
         public void CorrectFile_ShouldNotGiveError()
@@ -35,8 +38,15 @@ namespace Test
     using System;
     internal class Test { }
 }";
+            var expectedSource = @"using System;
+
+namespace Test
+{
+    internal class Test { }
+}";
             var expectedDiagnostic = GetDiagnosticResult(4, 5);
             VerifyCSharpDiagnostic(source, expectedDiagnostic);
+            VerifyCSharpFix(source, expectedSource);
         }
 
         [Fact]

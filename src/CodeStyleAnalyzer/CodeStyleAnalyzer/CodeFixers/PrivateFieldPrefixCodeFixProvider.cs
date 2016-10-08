@@ -29,10 +29,10 @@ namespace CodeStyleAnalyzer.CodeFixers
             var diagnostic = context.Diagnostics.First();
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
-
             var declaration = root.FindToken(diagnosticSpan.Start).Parent;
             var fieldSymbol = semanticModel.GetDeclaredSymbol(declaration);
             var newName = GetNewFieldName(fieldSymbol);
+
             if (fieldSymbol.Name != newName)
             {
                 context.RegisterCodeFix(
