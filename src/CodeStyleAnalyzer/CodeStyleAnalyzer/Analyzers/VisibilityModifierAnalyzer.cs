@@ -1,10 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Diagnostics;
-using System.Collections.Immutable;
-using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CodeStyleAnalyzer.Analyzers
 {
@@ -19,6 +18,7 @@ namespace CodeStyleAnalyzer.Analyzers
             SyntaxKind.EnumDeclaration,
             SyntaxKind.DelegateDeclaration,
         };
+
         private static SyntaxKind[] s_memberDeclarations =
         {
             SyntaxKind.ConstructorDeclaration,
@@ -28,6 +28,7 @@ namespace CodeStyleAnalyzer.Analyzers
             SyntaxKind.EventFieldDeclaration,
             SyntaxKind.FieldDeclaration,
         };
+
         private static SyntaxKind[] s_visibilityKeywords = { SyntaxKind.InternalKeyword, SyntaxKind.PublicKeyword, SyntaxKind.ProtectedKeyword, SyntaxKind.PrivateKeyword };
 
         private static readonly LocalizableString VisibilityModifierTitle = new LocalizableResourceString(nameof(Resources.VisibilityModifierTitle), Resources.ResourceManager, typeof(Resources));
@@ -81,6 +82,7 @@ namespace CodeStyleAnalyzer.Analyzers
             if (node.Parent.IsKind(SyntaxKind.InterfaceDeclaration)) return false;
             if (node.ChildNodes().OfType<ExplicitInterfaceSpecifierSyntax>().Any()) return false;
             if (node.IsKind(SyntaxKind.ConstructorDeclaration) && node.ChildNodesAndTokens().Any(x => x.IsKind(SyntaxKind.StaticKeyword))) return false;
+            if (node.IsKind(SyntaxKind.MethodDeclaration) && (node as MethodDeclarationSyntax).Modifiers.Any(SyntaxKind.PartialKeyword)) return false;
             return true;
         }
 

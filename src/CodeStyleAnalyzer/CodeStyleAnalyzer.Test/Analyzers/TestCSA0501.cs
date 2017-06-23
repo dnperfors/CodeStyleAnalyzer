@@ -8,6 +8,7 @@ namespace CodeStyleAnalyzer.Test.Analyzers
     public class TestCSA0501 : CodeStyleAnalyzerVerifier
     {
         protected override string CodeRuleId { get; } = "CSA0501";
+
         protected override string CodeRuleMessage { get; } = "Visibility modifier should be specified.";
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
@@ -160,7 +161,7 @@ public struct TestStruct
         }
 
         [Fact]
-        public void ExplicitMembersWithoutVisibilityModifier_ShouldReturnMessage()
+        public void ExplicitMembersWithoutVisibilityModifier_ShouldNotReturnMessage()
         {
             var source = @"
 public interface TestInterface
@@ -178,6 +179,27 @@ public class TestClass : TestInterface
     event EventHandler TestInterface.E;
 }";
 
+            VerifyCSharpDiagnostic(source);
+        }
+
+        [Fact]
+        public void PartialClassWithoutVisibilityModifier_ShouldReturnMessage()
+        {
+            var source = @"
+public partial class TestClass {}
+partial class TestClass {}";
+            VerifyCSharpDiagnostic(source, GetDiagnosticResult(3, 5));
+        }
+
+        [Fact]
+        public void PartialMemberWithoutVisibilityModifier_ShouldNotReturnMessage()
+        {
+            var source = @"
+public partial class TestClass {
+    partial void Test()
+    {
+    }
+}";
             VerifyCSharpDiagnostic(source);
         }
     }
