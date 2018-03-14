@@ -1,21 +1,21 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
-using System;
+﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CodeStyleAnalyzer.Analyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class PrivateFieldPrefixAnalyzer : DiagnosticAnalyzer
     {
-        private static readonly LocalizableString PrivateFieldPrefixTitle = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString PrivateFieldPrefixMessage = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString PrivateFieldPrefixDescription = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixDescription), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString s_privateFieldPrefixTitle = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixTitle), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString s_privateFieldPrefixMessage = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixMessageFormat), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString s_privateFieldPrefixDescription = new LocalizableResourceString(nameof(Resources.PrivateFieldPrefixDescription), Resources.ResourceManager, typeof(Resources));
 
-        private static DiagnosticDescriptor PrivateFIeldPrefixRule = new DiagnosticDescriptor(DiagnosticIds.PrivateFieldPrefix, PrivateFieldPrefixTitle, PrivateFieldPrefixMessage, Categories.StyleGuide, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: PrivateFieldPrefixDescription);
+        private static readonly DiagnosticDescriptor s_privateFIeldPrefixRule = new DiagnosticDescriptor(DiagnosticIds.PrivateFieldPrefix, s_privateFieldPrefixTitle, s_privateFieldPrefixMessage, Categories.StyleGuide, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: s_privateFieldPrefixDescription);
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(PrivateFIeldPrefixRule); } }
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(s_privateFIeldPrefixRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -26,11 +26,14 @@ namespace CodeStyleAnalyzer.Analyzers
         private static void AnalyzeSymbol(SymbolAnalysisContext context)
         {
             var fieldSymbol = context.Symbol;
-            if(!IsPrivateField((IFieldSymbol)fieldSymbol)) return;
+            if (!IsPrivateField((IFieldSymbol)fieldSymbol))
+            {
+                return;
+            }
             var newFieldName = GetNewFieldName(fieldSymbol);
             if (newFieldName != fieldSymbol.Name)
             {
-                var diagnostic = Diagnostic.Create(PrivateFIeldPrefixRule, fieldSymbol.Locations[0], fieldSymbol.Name);
+                var diagnostic = Diagnostic.Create(s_privateFIeldPrefixRule, fieldSymbol.Locations[0], fieldSymbol.Name);
                 context.ReportDiagnostic(diagnostic);
             }
         }

@@ -1,0 +1,14 @@
+{
+  "ServerUri": "https://sonarcloud.io/organizations/dnperfors-github/",
+  "Organization": {
+    "Key": "dnperfors-github",
+    "Name": "David Perfors"
+  },
+  "ProjectKey": "CodeStyleAnalyzer",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AWIkcqAZHZ5p85WycQkG",
+      "ProfileTimestamp": "2018-03-12T12:56:15+01:00"
+    }
+  }
+}

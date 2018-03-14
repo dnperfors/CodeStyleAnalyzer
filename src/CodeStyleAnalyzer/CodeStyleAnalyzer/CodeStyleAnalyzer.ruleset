@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - CodeStyleAnalyzer Sonar way" ToolsVersion="15.0">
+  <Include Path="..\..\sonarqube\codestyleanalyzercsharp.ruleset" Action="Default" />
+</RuleSet>

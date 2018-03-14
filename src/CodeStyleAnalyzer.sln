@@ -1,11 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.25914.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeStyleAnalyzer", "CodeStyleAnalyzer\CodeStyleAnalyzer\CodeStyleAnalyzer.csproj", "{045C3FE9-1CA3-4178-93AF-D5D26D25443D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeStyleAnalyzer.Test", "CodeStyleAnalyzer\CodeStyleAnalyzer.Test\CodeStyleAnalyzer.Test.csproj", "{A0DA9804-254C-40E1-9BD5-E8CFF8925C20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{3326640D-0D24-4EFD-B759-2BD2AFAC028D}"
+	ProjectSection(SolutionItems) = preProject
+		SonarQube\CodeStyleAnalyzerCSharp.ruleset = SonarQube\CodeStyleAnalyzerCSharp.ruleset
+		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EACCC5BE-D9FC-4A94-8595-8E55B44F3B1A}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +35,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36B0BD9F-6A07-434E-9955-3754DEF74BD2}
 	EndGlobalSection
 EndGlobal

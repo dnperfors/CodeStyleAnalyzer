@@ -31,17 +31,17 @@ namespace CodeStyleAnalyzer.Analyzers
 
         private static SyntaxKind[] s_visibilityKeywords = { SyntaxKind.InternalKeyword, SyntaxKind.PublicKeyword, SyntaxKind.ProtectedKeyword, SyntaxKind.PrivateKeyword };
 
-        private static readonly LocalizableString VisibilityModifierTitle = new LocalizableResourceString(nameof(Resources.VisibilityModifierTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString VisibilityModifierMessageFormat = new LocalizableResourceString(nameof(Resources.VisibilityModifierMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString VisibilityModifierDescription = new LocalizableResourceString(nameof(Resources.VisibilityModifierDescription), Resources.ResourceManager, typeof(Resources));
-        private static DiagnosticDescriptor VisibilityModifierRule = new DiagnosticDescriptor(DiagnosticIds.SpecifyVisibility, VisibilityModifierTitle, VisibilityModifierMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, true, VisibilityModifierDescription);
+        private static readonly LocalizableString s_visibilityModifierTitle = new LocalizableResourceString(nameof(Resources.VisibilityModifierTitle), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString s_visibilityModifierMessageFormat = new LocalizableResourceString(nameof(Resources.VisibilityModifierMessageFormat), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString s_visibilityModifierDescription = new LocalizableResourceString(nameof(Resources.VisibilityModifierDescription), Resources.ResourceManager, typeof(Resources));
+        private static readonly DiagnosticDescriptor s_visibilityModifierRule = new DiagnosticDescriptor(DiagnosticIds.SpecifyVisibility, s_visibilityModifierTitle, s_visibilityModifierMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, true, s_visibilityModifierDescription);
 
-        private static readonly LocalizableString VisibilityModifierPositionTitle = new LocalizableResourceString(nameof(Resources.VisibilityModifierPositionTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString VisibilityModifierPositionMessageFormat = new LocalizableResourceString(nameof(Resources.VisibilityModifierPositionMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString VisibilityModifierPositionDescription = new LocalizableResourceString(nameof(Resources.VisibilityModifierPositionDescription), Resources.ResourceManager, typeof(Resources));
-        private static DiagnosticDescriptor VisibilityModifierPositionRule = new DiagnosticDescriptor(DiagnosticIds.VisibilityModifierShouldBeFirstModifier, VisibilityModifierPositionTitle, VisibilityModifierPositionMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, true, VisibilityModifierPositionDescription);
+        private static readonly LocalizableString s_visibilityModifierPositionTitle = new LocalizableResourceString(nameof(Resources.VisibilityModifierPositionTitle), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString s_visibilityModifierPositionMessageFormat = new LocalizableResourceString(nameof(Resources.VisibilityModifierPositionMessageFormat), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString s_visibilityModifierPositionDescription = new LocalizableResourceString(nameof(Resources.VisibilityModifierPositionDescription), Resources.ResourceManager, typeof(Resources));
+        private static readonly DiagnosticDescriptor s_visibilityModifierPositionRule = new DiagnosticDescriptor(DiagnosticIds.VisibilityModifierShouldBeFirstModifier, s_visibilityModifierPositionTitle, s_visibilityModifierPositionMessageFormat, Categories.StyleGuide, DiagnosticSeverity.Warning, true, s_visibilityModifierPositionDescription);
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(VisibilityModifierRule, VisibilityModifierPositionRule); } }
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(s_visibilityModifierRule, s_visibilityModifierPositionRule); } }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -60,29 +60,46 @@ namespace CodeStyleAnalyzer.Analyzers
 
             if (foundVisibilityToken.IsKind(SyntaxKind.None))
             {
-                context.ReportDiagnostic(Diagnostic.Create(VisibilityModifierRule, context.Node.GetLocation()));
+                context.ReportDiagnostic(Diagnostic.Create(s_visibilityModifierRule, context.Node.GetLocation()));
             }
-            else
+            else if (context.Node.GetFirstToken() != foundVisibilityToken && foundVisibilityToken.GetPreviousToken().Kind() != SyntaxKind.CloseBracketToken)
             {
-                if (context.Node.GetFirstToken() != foundVisibilityToken && foundVisibilityToken.GetPreviousToken().Kind() != SyntaxKind.CloseBracketToken)
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(VisibilityModifierPositionRule, foundVisibilityToken.GetLocation()));
-                }
+                context.ReportDiagnostic(Diagnostic.Create(s_visibilityModifierPositionRule, foundVisibilityToken.GetLocation()));
             }
         }
 
         private static void checkMemberVisibility(SyntaxNodeAnalysisContext context)
         {
-            if (!ShouldHaveExplicitVisibility(context.Node)) return;
+            if (!ShouldHaveExplicitVisibility(context.Node))
+            {
+                return;
+            }
+
             checkVisibility(context);
         }
 
         private static bool ShouldHaveExplicitVisibility(SyntaxNode node)
         {
-            if (node.Parent.IsKind(SyntaxKind.InterfaceDeclaration)) return false;
-            if (node.ChildNodes().OfType<ExplicitInterfaceSpecifierSyntax>().Any()) return false;
-            if (node.IsKind(SyntaxKind.ConstructorDeclaration) && node.ChildNodesAndTokens().Any(x => x.IsKind(SyntaxKind.StaticKeyword))) return false;
-            if (node.IsKind(SyntaxKind.MethodDeclaration) && (node as MethodDeclarationSyntax).Modifiers.Any(SyntaxKind.PartialKeyword)) return false;
+            if (node.Parent.IsKind(SyntaxKind.InterfaceDeclaration))
+            {
+                return false;
+            }
+
+            if (node.ChildNodes().OfType<ExplicitInterfaceSpecifierSyntax>().Any())
+            {
+                return false;
+            }
+
+            if (node.IsKind(SyntaxKind.ConstructorDeclaration) && node.ChildNodesAndTokens().Any(x => x.IsKind(SyntaxKind.StaticKeyword)))
+            {
+                return false;
+            }
+
+            if (node.IsKind(SyntaxKind.MethodDeclaration) && (node as MethodDeclarationSyntax).Modifiers.Any(SyntaxKind.PartialKeyword))
+            {
+                return false;
+            }
+
             return true;
         }
 

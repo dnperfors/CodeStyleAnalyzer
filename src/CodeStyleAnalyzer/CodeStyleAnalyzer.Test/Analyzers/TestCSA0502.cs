@@ -1,15 +1,14 @@
-﻿using CodeStyleAnalyzer.Test.Verifiers;
-using Xunit;
+﻿using CodeStyleAnalyzer.Analyzers;
+using CodeStyleAnalyzer.Test.Verifiers;
 using Microsoft.CodeAnalysis.Diagnostics;
-using CodeStyleAnalyzer.Analyzers;
-using System;
-using System.Collections;
+using Xunit;
 
 namespace CodeStyleAnalyzer.Test.Analyzers
 {
     public class TestCSA0502 : CodeStyleAnalyzerVerifier
     {
         protected override string CodeRuleId { get; } = "CSA0502";
+
         protected override string CodeRuleMessage { get; } = "Visibility modifier should be the first modifier.";
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer() => new VisibilityModifierAnalyzer();
@@ -23,6 +22,7 @@ namespace Test
     abstract internal class Test { }
 }
 ";
+
             var expectedDiagnostic = GetDiagnosticResult(4, 14);
             VerifyCSharpDiagnostic(source, expectedDiagnostic);
         }

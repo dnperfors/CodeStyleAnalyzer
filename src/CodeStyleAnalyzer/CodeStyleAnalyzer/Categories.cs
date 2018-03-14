@@ -2,6 +2,6 @@
 {
     public static class Categories
     {
-        public static string StyleGuide = nameof(StyleGuide);
+        public static string StyleGuide { get; } = nameof(StyleGuide);
     }
 }

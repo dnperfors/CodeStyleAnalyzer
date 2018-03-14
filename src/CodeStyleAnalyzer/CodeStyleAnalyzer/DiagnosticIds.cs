@@ -3,22 +3,37 @@
     // Id's are based on "<prefix><stylerulenumber><subrulenumber>
     public static class DiagnosticIds
     {
-        public static string CurlybracesShouldBeginOnNewLine = CreateDiagnosticId(1, 1);
-        public static string UseConsistentIndentation = CreateDiagnosticId(2, 1);
-        public static string PrivateFieldPrefix = CreateDiagnosticId(3, 1);
-        public static string PrivateFieldCanBeReadonly = CreateDiagnosticId(3, 2);
-        public static string ReadOnlyKeywordShouldBeAfterStatic = CreateDiagnosticId(3, 3);
-        public static string AvoidThis =  CreateDiagnosticId(4, 1);
-        public static string SpecifyVisibility = CreateDiagnosticId(5, 1);
-        public static string VisibilityModifierShouldBeFirstModifier = CreateDiagnosticId(5, 2);
-        public static string UsingShouldBeOutsideNamespace = CreateDiagnosticId(6, 1);
-        public static string AvoidMultipleBlankLines = CreateDiagnosticId(6, 1);
-        public static string AvoidSpuriousWhitespace = CreateDiagnosticId(6, 1);
-        public static string UseExistingStyle = CreateDiagnosticId(6, 1); // Can't be implemented
-        public static string OnlyUseVarWhenObvious = CreateDiagnosticId(6, 1); // Can't be implemented
-        public static string UseLanguageKeywords = CreateDiagnosticId(6, 1);
-        public static string UsePascalCasingForConstantLocalVariablesAndFields = CreateDiagnosticId(6, 1);
-        public static string UseNameOfOperator = CreateDiagnosticId(6, 1);
+        public static string CurlybracesShouldBeginOnNewLine { get; } = CreateDiagnosticId(1, 1);
+
+        public static string UseConsistentIndentation { get; } = CreateDiagnosticId(2, 1);
+
+        public static string PrivateFieldPrefix { get; } = CreateDiagnosticId(3, 1);
+
+        public static string PrivateFieldCanBeReadonly { get; } = CreateDiagnosticId(3, 2);
+
+        public static string ReadOnlyKeywordShouldBeAfterStatic { get; } = CreateDiagnosticId(3, 3);
+
+        public static string AvoidThis { get; } = CreateDiagnosticId(4, 1);
+
+        public static string SpecifyVisibility { get; } = CreateDiagnosticId(5, 1);
+
+        public static string VisibilityModifierShouldBeFirstModifier { get; } = CreateDiagnosticId(5, 2);
+
+        public static string UsingShouldBeOutsideNamespace { get; } = CreateDiagnosticId(6, 1);
+
+        public static string AvoidMultipleBlankLines { get; } = CreateDiagnosticId(6, 1);
+
+        public static string AvoidSpuriousWhitespace { get; } = CreateDiagnosticId(6, 1);
+
+        public static string UseExistingStyle { get; } = CreateDiagnosticId(6, 1); // Can't be implemented
+
+        public static string OnlyUseVarWhenObvious { get; } = CreateDiagnosticId(6, 1); // Can't be implemented
+
+        public static string UseLanguageKeywords { get; } = CreateDiagnosticId(6, 1);
+
+        public static string UsePascalCasingForConstantLocalVariablesAndFields { get; } = CreateDiagnosticId(6, 1);
+
+        public static string UseNameOfOperator { get; } = CreateDiagnosticId(6, 1);
 
         private static string CreateDiagnosticId(int ruleId, int subRuleId)
         {

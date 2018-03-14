@@ -15,14 +15,14 @@ namespace TestHelper
     /// </summary>
     public abstract partial class DiagnosticVerifier
     {
-        private static readonly MetadataReference CorlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-        private static readonly MetadataReference SystemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
-        private static readonly MetadataReference CSharpSymbolsReference = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
-        private static readonly MetadataReference CodeAnalysisReference = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
+        private static readonly MetadataReference s_corlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+        private static readonly MetadataReference s_systemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
+        private static readonly MetadataReference s_csharpSymbolsReference = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
+        private static readonly MetadataReference s_codeAnalysisReference = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
 
-        internal static string DefaultFilePathPrefix = "Test";
-        internal static string CSharpDefaultFileExt = "cs";
-        internal static string TestProjectName = "TestProject";
+        internal static string s_defaultFilePathPrefix = "Test";
+        internal static string s_csharpDefaultFileExt = "cs";
+        internal static string s_testProjectName = "TestProject";
 
         /// <summary>
         /// Given classes in the form of strings, their language, and an IDiagnosticAnlayzer to apply to it, return the diagnostics found in the string after converting it to a document.
@@ -64,7 +64,7 @@ namespace TestHelper
                     }
                     else
                     {
-                        for (int i = 0; i < documents.Length; i++)
+                        for (var i = 0; i < documents.Length; i++)
                         {
                             var document = documents[i];
                             var tree = document.GetSyntaxTreeAsync().Result;
@@ -135,20 +135,20 @@ namespace TestHelper
         /// <returns>A Project created out of the Documents created from the source strings</returns>
         private static Project CreateProject(string[] sources, string language = LanguageNames.CSharp)
         {
-            string fileNamePrefix = DefaultFilePathPrefix;
-            string fileExt = language == LanguageNames.CSharp ? CSharpDefaultFileExt : string.Empty;
+            var fileNamePrefix = s_defaultFilePathPrefix;
+            var fileExt = language == LanguageNames.CSharp ? s_csharpDefaultFileExt : string.Empty;
 
-            var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
+            var projectId = ProjectId.CreateNewId(debugName: s_testProjectName);
 
             var solution = new AdhocWorkspace()
                 .CurrentSolution
-                .AddProject(projectId, TestProjectName, TestProjectName, language)
-                .AddMetadataReference(projectId, CorlibReference)
-                .AddMetadataReference(projectId, SystemCoreReference)
-                .AddMetadataReference(projectId, CSharpSymbolsReference)
-                .AddMetadataReference(projectId, CodeAnalysisReference);
+                .AddProject(projectId, s_testProjectName, s_testProjectName, language)
+                .AddMetadataReference(projectId, s_corlibReference)
+                .AddMetadataReference(projectId, s_systemCoreReference)
+                .AddMetadataReference(projectId, s_csharpSymbolsReference)
+                .AddMetadataReference(projectId, s_codeAnalysisReference);
 
-            int count = 0;
+            var count = 0;
             foreach (var source in sources)
             {
                 var newFileName = fileNamePrefix + count + "." + fileExt;
@@ -160,4 +160,3 @@ namespace TestHelper
         }
     }
 }
-

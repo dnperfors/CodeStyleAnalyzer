@@ -1,12 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeFixes;
+﻿using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Immutable;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 
 namespace CodeStyleAnalyzer.CodeFixers
@@ -16,10 +16,7 @@ namespace CodeStyleAnalyzer.CodeFixers
     {
         private const string title = "Move using outside namepspace";
 
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIds.UsingShouldBeOutsideNamespace); }
-        }
+        public override ImmutableArray<string> FixableDiagnosticIds { get; } = ImmutableArray.Create(DiagnosticIds.UsingShouldBeOutsideNamespace);
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

@@ -1,9 +1,9 @@
-﻿using CodeStyleAnalyzer.Test.Verifiers;
-using Xunit;
-using Microsoft.CodeAnalysis.Diagnostics;
-using CodeStyleAnalyzer.Analyzers;
-using Microsoft.CodeAnalysis.CodeFixes;
+﻿using CodeStyleAnalyzer.Analyzers;
 using CodeStyleAnalyzer.CodeFixers;
+using CodeStyleAnalyzer.Test.Verifiers;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Xunit;
 
 namespace CodeStyleAnalyzer.Test.Analyzers
 {

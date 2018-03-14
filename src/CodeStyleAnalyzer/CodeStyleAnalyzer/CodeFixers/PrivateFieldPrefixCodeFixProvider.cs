@@ -15,11 +15,9 @@ namespace CodeStyleAnalyzer.CodeFixers
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(PrivateFieldPrefixCodeFixProvider)), Shared]
     public class PrivateFieldPrefixCodeFixProvider : CodeFixProvider
     {
-        private const string title = "Prefix field";
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIds.PrivateFieldPrefix); }
-        }
+        private const string Title = "Prefix field";
+
+        public override ImmutableArray<string> FixableDiagnosticIds { get; } = ImmutableArray.Create(DiagnosticIds.PrivateFieldPrefix);
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -37,9 +35,9 @@ namespace CodeStyleAnalyzer.CodeFixers
             {
                 context.RegisterCodeFix(
                     CodeAction.Create(
-                        title: title,
+                        title: Title,
                         createChangedSolution: c => RenameFieldAsync(context.Document, fieldSymbol, newName, c),
-                        equivalenceKey: title),
+                        equivalenceKey: Title),
                     diagnostic);
             }
         }
