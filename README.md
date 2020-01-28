@@ -1,9 +1,11 @@
 # CodeStyleAnalyzer
 CodeStyleAnalyzer is a Roslyn analyzer and code fixer to check for coding style violations. The coding styles are [documented here][corefx-coding-style].
 
-> Since the creation of this project, Visual Studio got support more advance [.editorconfig][editorconfig] support, which allows naming guidelines to be enforced on project level. You will need Visual Studio 2017 for this functionality.
-
 Large part of the code is based on the [.NET CodeFormatter tool][codeformatter]
+
+# Maintainance status
+Since the creation of this project, Visual Studio got support more advance [.editorconfig][editorconfig] support, which allows naming guidelines to be enforced on project level. You will need Visual Studio 2017 for this functionality.
+Because of this I didn't work on this project anymore and didn't use it myself and no issues were reported. The latest NuGet package will be available and if necesary, I am open for PR's to fix issues.
 
 # Usage
 
